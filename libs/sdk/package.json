@@ -1,0 +1,41 @@
+{
+  "name": "@teamgaga/sdk",
+  "version": "0.1.0",
+  "description": "TeamGaga Open Platform SDK for JavaScript and TypeScript",
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "vp pack",
+    "dev": "vp pack --watch",
+    "test": "vp test run",
+    "typecheck": "vp exec tsc --noEmit",
+    "prepublishOnly": "vp run build"
+  },
+  "keywords": [
+    "teamgaga",
+    "bot",
+    "sdk"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}

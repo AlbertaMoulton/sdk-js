@@ -1,0 +1,19 @@
+{
+  "name": "dice-bot",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "vp exec tsx src/bot.ts",
+    "typecheck": "vp exec tsc --noEmit"
+  },
+  "dependencies": {
+    "@teamgaga/sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

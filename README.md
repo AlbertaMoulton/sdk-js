@@ -1,46 +1,26 @@
-# TeamGaga SDK for JavaScript
+# TeamGaga SDK JS
 
-JavaScript and TypeScript SDK for the TeamGaga Open Platform.
+JavaScript and TypeScript monorepo for the TeamGaga Open Platform SDK.
+
+## Structure
+
+```text
+libs/sdk
+examples/dice-bot
+```
 
 ## Install
 
 ```bash
-vp add @teamgaga/sdk
+vp install
 ```
 
-## Bot Example
+## Common Commands
 
-```ts
-import { Bot } from "@teamgaga/sdk";
-
-const bot = new Bot(process.env.TEAMGAGA_BOT_TOKEN!);
-
-bot.on("message", async (ctx) => {
-  if (ctx.text !== "roll") return;
-
-  const point = Math.floor(Math.random() * 6) + 1;
-  await ctx.reply(`You rolled ${point}.`);
-});
-
-bot.start({ pollInterval: 3000 });
+```bash
+vp run sdk#build
+vp run sdk#test
+vp run dice-bot#start
 ```
 
-TeamGaga bots currently receive messages by polling. Keep `pollInterval` at `3000` milliseconds or higher unless you have a good reason to change it.
-
-## API Client Example
-
-```ts
-import { TeamGagaClient } from "@teamgaga/sdk";
-
-const client = new TeamGagaClient({
-  botToken: process.env.TEAMGAGA_BOT_TOKEN!,
-});
-
-const messages = await client.pollMessages();
-
-await client.sendMessage({
-  channelId: messages.im[0].channel_id,
-  content: "Hello from TeamGaga SDK.",
-  quoteId: messages.im[0].message_id,
-});
-```
+`libs/sdk` contains the publishable `@teamgaga/sdk` package. `examples/dice-bot` contains the getting-started bot example.
