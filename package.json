@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "TeamGaga Open Platform SDK for JavaScript and TypeScript",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     }
   },
   "files": [
@@ -17,7 +17,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "vp pack",
     "test": "bun test",
     "typecheck": "tsc --noEmit"
   },
@@ -29,6 +29,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/bun": "latest",
-    "typescript": "^5"
-  }
+    "typescript": "^5",
+    "vite-plus": "^0.1.19"
+  },
+  "packageManager": "bun@1.3.13"
 }
