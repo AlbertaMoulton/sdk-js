@@ -1,9 +1,9 @@
-import { expect, mock, test } from "bun:test";
+import { expect, test, vi } from "vitest";
 import { Bot } from "../src/bot";
 
 test("Bot turns incoming messages into message contexts", async () => {
   const abort = new AbortController();
-  const fetchMock = mock(async (url: URL, init: RequestInit) => {
+  const fetchMock = vi.fn(async (url: URL, init: RequestInit) => {
     if (init.method === "GET") {
       abort.abort();
       return Response.json({

@@ -1,8 +1,8 @@
-import { expect, mock, test } from "bun:test";
+import { expect, test, vi } from "vitest";
 import { TeamGagaClient } from "../src/client";
 
 test("pollMessages calls TeamGaga and returns response data", async () => {
-  const fetchMock = mock(async () => {
+  const fetchMock = vi.fn(async () => {
     return Response.json({
       status: true,
       code: 1000,
@@ -30,7 +30,7 @@ test("pollMessages calls TeamGaga and returns response data", async () => {
 });
 
 test("sendMessage posts a text message", async () => {
-  const fetchMock = mock(async () => {
+  const fetchMock = vi.fn(async () => {
     return Response.json({
       status: true,
       code: 1000,

@@ -5,7 +5,7 @@ JavaScript and TypeScript SDK for the TeamGaga Open Platform.
 ## Install
 
 ```bash
-bun add @teamgaga/sdk
+vp add @teamgaga/sdk
 ```
 
 ## Bot Example

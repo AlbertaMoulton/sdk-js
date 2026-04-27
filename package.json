@@ -18,8 +18,8 @@
   ],
   "scripts": {
     "build": "vp pack",
-    "test": "bun test",
-    "typecheck": "tsc --noEmit"
+    "test": "vp test run",
+    "typecheck": "vp exec tsc --noEmit"
   },
   "keywords": [
     "teamgaga",
@@ -28,9 +28,9 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@types/bun": "latest",
     "typescript": "^5",
-    "vite-plus": "^0.1.19"
+    "vite-plus": "^0.1.19",
+    "vitest": "^4.1.4"
   },
-  "packageManager": "bun@1.3.13"
+  "packageManager": "pnpm@10.32.1"
 }
