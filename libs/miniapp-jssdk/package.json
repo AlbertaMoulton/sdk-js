@@ -1,5 +1,5 @@
 {
-  "name": "@teamgaga/miniapp-js-sdk",
+  "name": "@teamgaga/miniapp-jssdk",
   "version": "0.1.0",
   "description": "TeamGaga MiniApp JavaScript SDK for Flutter WebView containers",
   "keywords": [
@@ -17,7 +17,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlbertaMoulton/sdk-js.git",
-    "directory": "libs/miniapp-js-sdk"
+    "directory": "libs/miniapp-jssdk"
   },
   "files": [
     "dist",

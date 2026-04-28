@@ -5,7 +5,7 @@ JavaScript SDK for TeamGaga miniapps running inside the TeamGaga App Flutter Web
 ## Build
 
 ```sh
-pnpm --filter @teamgaga/miniapp-js-sdk build
+pnpm --filter @teamgaga/miniapp-jssdk build
 ```
 
 The build emits ES5 IIFE bundles for WebView injection:
