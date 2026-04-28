@@ -29,7 +29,7 @@ export class Bot {
 
     while (!options.signal?.aborted) {
       try {
-        const messages = await this.client.pollMessages({ filter: ["im"] });
+        const messages = await this.client.pollMessages();
 
         for (const message of messages.im) {
           await this.handleMessage(message);
