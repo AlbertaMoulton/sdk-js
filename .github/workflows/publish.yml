@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+      - "miniapp-jssdk-v*"
 
 permissions:
   contents: read
@@ -29,17 +30,56 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Resolve package from tag
+        id: package
+        run: |
+          node <<'NODE' >> "$GITHUB_OUTPUT"
+          const tag = process.env.GITHUB_REF_NAME;
+          const packages = [
+            {
+              prefix: "miniapp-jssdk-v",
+              name: "@teamgaga/miniapp-jssdk",
+              dir: "libs/miniapp-jssdk",
+            },
+            {
+              prefix: "v",
+              name: "@teamgaga/sdk",
+              dir: "libs/sdk",
+            },
+          ];
+
+          const pkg = packages.find((candidate) => tag.startsWith(candidate.prefix));
+          if (!pkg) {
+            throw new Error(`Unsupported release tag: ${tag}`);
+          }
+
+          const version = tag.slice(pkg.prefix.length);
+          console.log(`name=${pkg.name}`);
+          console.log(`dir=${pkg.dir}`);
+          console.log(`version=${version}`);
+          NODE
+
       - name: Verify
         run: pnpm run ready
 
       - name: Verify tag matches package version
         run: |
-          node -e 'const pkg = require("./libs/sdk/package.json"); const expected = "v" + pkg.version; if (process.env.GITHUB_REF_NAME !== expected) { throw new Error("Tag " + process.env.GITHUB_REF_NAME + " does not match package version " + expected); }'
+          node <<'NODE'
+          const pkg = require(`./${process.env.PACKAGE_DIR}/package.json`);
+          if (pkg.version !== process.env.PACKAGE_VERSION) {
+            throw new Error(`Tag version ${process.env.PACKAGE_VERSION} does not match ${pkg.name} package version ${pkg.version}`);
+          }
+          NODE
+        env:
+          PACKAGE_DIR: ${{ steps.package.outputs.dir }}
+          PACKAGE_VERSION: ${{ steps.package.outputs.version }}
 
-      - name: Pack SDK
+      - name: Pack package
         run: |
           mkdir -p .release
-          pnpm --filter @teamgaga/sdk pack --pack-destination "$GITHUB_WORKSPACE/.release"
+          pnpm --filter "$PACKAGE_NAME" pack --pack-destination "$GITHUB_WORKSPACE/.release"
+        env:
+          PACKAGE_NAME: ${{ steps.package.outputs.name }}
 
-      - name: Publish SDK
+      - name: Publish package
         run: npm publish .release/*.tgz --access public

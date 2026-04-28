@@ -1,17 +1,42 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const packagePath = resolve(rootDir, "libs/sdk/package.json");
-const releaseType = process.argv[2];
 const validReleaseTypes = new Set(["major", "minor", "patch"]);
+const packages = {
+  sdk: {
+    name: "@teamgaga/sdk",
+    path: "libs/sdk/package.json",
+    tagPrefix: "",
+  },
+  "miniapp-jssdk": {
+    name: "@teamgaga/miniapp-jssdk",
+    path: "libs/miniapp-jssdk/package.json",
+    tagPrefix: "miniapp-jssdk-",
+  },
+};
 
-if (!validReleaseTypes.has(releaseType)) {
-  console.error("Usage: pnpm run release:<major|minor|patch>");
+const [firstArg, secondArg] = process.argv.slice(2);
+const packageKey = secondArg ? firstArg : "sdk";
+const releaseType = secondArg ?? firstArg;
+const packageConfig = packages[packageKey];
+
+if (!packageConfig || !validReleaseTypes.has(releaseType)) {
+  console.error(
+    [
+      "Usage:",
+      "  pnpm run release:<major|minor|patch>",
+      "  pnpm run release:sdk:<major|minor|patch>",
+      "  pnpm run release:miniapp-jssdk:<major|minor|patch>",
+      "  node scripts/release.mjs <sdk|miniapp-jssdk> <major|minor|patch>",
+    ].join("\n"),
+  );
   process.exit(1);
 }
+
+const packagePath = resolve(rootDir, packageConfig.path);
 
 function run(command, args, options = {}) {
   execFileSync(command, args, {
@@ -73,7 +98,7 @@ assertMainBranch();
 
 const packageJson = JSON.parse(readFileSync(packagePath, "utf8"));
 const nextVersion = bumpVersion(packageJson.version, releaseType);
-const tagName = `v${nextVersion}`;
+const tagName = `${packageConfig.tagPrefix}v${nextVersion}`;
 
 try {
   output("git", ["rev-parse", "--verify", tagName]);
@@ -87,10 +112,10 @@ packageJson.version = nextVersion;
 writeFileSync(packagePath, `${JSON.stringify(packageJson, null, 2)}\n`);
 
 run("pnpm", ["run", "ready"]);
-run("pnpm", ["--filter", "@teamgaga/sdk", "pack", "--dry-run"]);
+run("pnpm", ["--filter", packageConfig.name, "pack", "--dry-run"]);
 
-run("git", ["add", "libs/sdk/package.json"]);
-run("git", ["commit", "-m", `release: ${tagName}`]);
+run("git", ["add", packageConfig.path]);
+run("git", ["commit", "-m", `release(${packageKey}): ${tagName}`]);
 run("git", ["tag", tagName]);
 
 console.log(`Release ${tagName} is ready. Push it with: git push origin main ${tagName}`);
