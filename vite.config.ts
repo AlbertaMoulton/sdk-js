@@ -1,6 +1,14 @@
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({
-  fmt: {},
-  lint: {},
+  fmt: {
+    singleQuote: false,
+  },
+  lint: {
+    ignorePatterns: ["**/dist/**", "**/node_modules/**"],
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+  },
 });

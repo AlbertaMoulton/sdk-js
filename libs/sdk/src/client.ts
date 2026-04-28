@@ -20,9 +20,7 @@ export class Client {
     this.fetchImpl = options.fetch ?? fetch;
   }
 
-  async pollMessages(
-    options: PollMessagesOptions = {},
-  ): Promise<PullMessagesResponse> {
+  async pollMessages(options: PollMessagesOptions = {}): Promise<PullMessagesResponse> {
     const url = new URL("/bot/v1/messages", this.baseUrl);
 
     if (options.limit !== undefined) {
@@ -52,20 +50,18 @@ export class Client {
     });
   }
 
-  private async request<T>(
-    pathOrUrl: string | URL,
-    init: RequestInit,
-  ): Promise<T> {
-    const url =
-      pathOrUrl instanceof URL ? pathOrUrl : new URL(pathOrUrl, this.baseUrl);
+  private async request<T>(pathOrUrl: string | URL, init: RequestInit): Promise<T> {
+    const url = pathOrUrl instanceof URL ? pathOrUrl : new URL(pathOrUrl, this.baseUrl);
+    const headers = new Headers(init.headers);
+
+    headers.set("Authorization", `Bot ${this.botToken}`);
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
 
     const response = await this.fetchImpl(url, {
       ...init,
-      headers: {
-        Authorization: `Bot ${this.botToken}`,
-        "Content-Type": "application/json",
-        ...init.headers,
-      },
+      headers,
     });
 
     if (!response.ok) {

@@ -10,9 +10,7 @@ const bot = new Bot(botToken);
 const mention = `@{!${botId}}`;
 
 bot.on("message", async (ctx) => {
-  const command = ctx.text.startsWith(mention)
-    ? ctx.text.slice(mention.length).trim()
-    : "";
+  const command = ctx.text.startsWith(mention) ? ctx.text.slice(mention.length).trim() : "";
 
   if (command !== "roll") return;
 
@@ -22,6 +20,6 @@ bot.on("message", async (ctx) => {
 
 console.log(`Dice bot is running. Try: ${mention} roll`);
 
-bot.start({
+void bot.start({
   pollInterval: Number(process.env.POLL_INTERVAL_MS || 3000),
 });

@@ -14,9 +14,7 @@ export class Bot {
   private readonly handlers: MessageHandler[] = [];
 
   constructor(options: BotOptions | string) {
-    this.client = new Client(
-      typeof options === "string" ? { botToken: options } : options,
-    );
+    this.client = new Client(typeof options === "string" ? { botToken: options } : options);
   }
 
   on(event: "message", handler: MessageHandler): this {
