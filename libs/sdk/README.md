@@ -30,9 +30,9 @@ TeamGaga bots currently receive messages by polling. Keep `pollInterval` at `300
 ## API Client Example
 
 ```ts
-import { TeamGagaClient } from "@teamgaga/sdk";
+import { Client } from "@teamgaga/sdk";
 
-const client = new TeamGagaClient({
+const client = new Client({
   botToken: process.env.TEAMGAGA_BOT_TOKEN!,
 });
 

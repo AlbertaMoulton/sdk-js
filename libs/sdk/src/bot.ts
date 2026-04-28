@@ -1,4 +1,4 @@
-import { TeamGagaClient } from "./client";
+import { Client } from "./client";
 import type { BotOptions, Message, StartOptions } from "./types";
 
 export type MessageContext = {
@@ -10,11 +10,11 @@ export type MessageContext = {
 type MessageHandler = (ctx: MessageContext) => Promise<void> | void;
 
 export class Bot {
-  readonly client: TeamGagaClient;
+  readonly client: Client;
   private readonly handlers: MessageHandler[] = [];
 
   constructor(options: BotOptions | string) {
-    this.client = new TeamGagaClient(
+    this.client = new Client(
       typeof options === "string" ? { botToken: options } : options,
     );
   }

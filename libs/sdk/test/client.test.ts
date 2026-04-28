@@ -1,5 +1,5 @@
 import { expect, test, vi } from "vitest";
-import { TeamGagaClient } from "../src/client";
+import { Client } from "../src/client";
 
 test("pollMessages calls TeamGaga and returns response data", async () => {
   const fetchMock = vi.fn(async () => {
@@ -12,7 +12,7 @@ test("pollMessages calls TeamGaga and returns response data", async () => {
     });
   });
 
-  const client = new TeamGagaClient({
+  const client = new Client({
     botToken: "token",
     fetch: fetchMock as unknown as typeof fetch,
   });
@@ -40,7 +40,7 @@ test("sendMessage posts a text message", async () => {
     });
   });
 
-  const client = new TeamGagaClient({
+  const client = new Client({
     botToken: "token",
     fetch: fetchMock as unknown as typeof fetch,
   });

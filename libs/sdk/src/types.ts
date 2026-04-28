@@ -1,4 +1,4 @@
-export type TeamGagaClientOptions = {
+export type ClientOptions = {
   botToken: string;
   baseUrl?: string;
   fetch?: typeof fetch;
@@ -56,7 +56,7 @@ export type PollMessagesOptions = {
   filter?: Array<"im" | "event">;
 };
 
-export type BotOptions = TeamGagaClientOptions & {
+export type BotOptions = ClientOptions & {
   botId?: string;
 };
 

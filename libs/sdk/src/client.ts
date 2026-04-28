@@ -4,17 +4,17 @@ import type {
   SendMessageParams,
   SendMessageResponse,
   TeamGagaApiResponse,
-  TeamGagaClientOptions,
+  ClientOptions,
 } from "./types";
 
 const DEFAULT_BASE_URL = "https://open.teamgaga.com";
 
-export class TeamGagaClient {
+export class Client {
   private readonly botToken: string;
   private readonly baseUrl: string;
   private readonly fetchImpl: typeof fetch;
 
-  constructor(options: TeamGagaClientOptions) {
+  constructor(options: ClientOptions) {
     this.botToken = options.botToken;
     this.baseUrl = options.baseUrl ?? DEFAULT_BASE_URL;
     this.fetchImpl = options.fetch ?? fetch;

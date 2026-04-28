@@ -1,5 +1,5 @@
 export { Bot, type MessageContext } from "./bot";
-export { TeamGagaClient } from "./client";
+export { Client } from "./client";
 export type {
   BotOptions,
   Event,
@@ -10,5 +10,5 @@ export type {
   SendMessageResponse,
   StartOptions,
   TeamGagaApiResponse,
-  TeamGagaClientOptions,
+  ClientOptions,
 } from "./types";
