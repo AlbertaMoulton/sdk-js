@@ -6,6 +6,9 @@
     "lib": ["ES2022", "DOM"],
     "strict": true,
     "skipLibCheck": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "paths": {
+      "@teamgaga/sdk": ["./libs/sdk/src/index.ts"]
+    }
   }
 }
