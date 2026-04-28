@@ -1,0 +1,54 @@
+{
+  "name": "@teamgaga/miniapp-js-sdk",
+  "version": "0.1.0",
+  "description": "TeamGaga MiniApp JavaScript SDK for Flutter WebView containers",
+  "keywords": [
+    "jssdk",
+    "miniapp",
+    "sdk",
+    "teamgaga",
+    "webview"
+  ],
+  "homepage": "https://github.com/AlbertaMoulton/sdk-js#readme",
+  "bugs": {
+    "url": "https://github.com/AlbertaMoulton/sdk-js/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlbertaMoulton/sdk-js.git",
+    "directory": "libs/miniapp-js-sdk"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "main": "./dist/index.iife.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.iife.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "rollup -c && tsc -p tsconfig.json --emitDeclarationOnly",
+    "test": "vp test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest",
+    "@rollup/plugin-babel": "latest",
+    "@rollup/plugin-terser": "latest",
+    "@rollup/plugin-typescript": "latest",
+    "rollup": "latest",
+    "tslib": "latest",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  }
+}
