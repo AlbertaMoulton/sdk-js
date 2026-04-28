@@ -21,7 +21,7 @@ test("pollMessages calls TeamGaga and returns response data", async () => {
 
   expect(messages).toEqual({ im: [], event: [] });
   expect(fetchMock).toHaveBeenCalledWith(
-    new URL("https://open.teamgaga.com/bot/v1/messages?limit=10&filter=im"),
+    new URL("https://open.teamgaga.com/bot/v1/messages?limit=10&filter%5B%5D=im"),
     expect.objectContaining({
       method: "GET",
       headers: expect.objectContaining({ Authorization: "Bot token" }),

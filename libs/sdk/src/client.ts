@@ -30,7 +30,7 @@ export class Client {
     }
 
     for (const filter of options.filter ?? []) {
-      url.searchParams.append("filter", filter);
+      url.searchParams.append("filter[]", filter);
     }
 
     const result = await this.request<PullMessagesResponse>(url, {
