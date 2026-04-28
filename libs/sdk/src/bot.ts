@@ -28,10 +28,14 @@ export class Bot {
     const pollInterval = options.pollInterval ?? 3000;
 
     while (!options.signal?.aborted) {
-      const messages = await this.client.pollMessages({ filter: ["im"] });
+      try {
+        const messages = await this.client.pollMessages({ filter: ["im"] });
 
-      for (const message of messages.im) {
-        await this.handleMessage(message);
+        for (const message of messages.im) {
+          await this.handleMessage(message);
+        }
+      } catch (error) {
+        console.error("Bot polling error:", error);
       }
 
       await sleep(pollInterval, options.signal);

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "vp exec tsx src/bot.ts",
+    "start": "vp exec tsx --env-file=.env src/bot.ts",
     "typecheck": "vp exec tsc --noEmit"
   },
   "dependencies": {
