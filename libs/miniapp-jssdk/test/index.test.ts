@@ -57,9 +57,11 @@ test("exposes all known miniapp API methods", () => {
   expect(getCommunityInfo).toEqual(expect.any(Function));
 });
 
-test("supports default imports for app bundlers", () => {
+test("supports default imports for app bundlers", async () => {
   expect(defaultMiniAppSDK).toBe(TeamGagaMiniApp);
-  expect(defaultMiniAppSDK.getSystemInfo).toEqual(expect.any(Function));
+  await expect(defaultMiniAppSDK.getSystemInfo()).rejects.toThrow(
+    "TeamGaga miniapp bridge is unavailable",
+  );
 });
 
 test("keeps callback ids unique when earlier requests finish out of order", async () => {

@@ -6,9 +6,7 @@ import { expect, test } from "vitest";
 const packageRoot = resolve(import.meta.dirname, "..");
 
 test("package import entry points to an ESM bundle", async () => {
-  const packageJson = JSON.parse(
-    await readFile(resolve(packageRoot, "package.json"), "utf8"),
-  ) as {
+  const packageJson = JSON.parse(await readFile(resolve(packageRoot, "package.json"), "utf8")) as {
     module?: string;
     exports?: {
       "."?: {
