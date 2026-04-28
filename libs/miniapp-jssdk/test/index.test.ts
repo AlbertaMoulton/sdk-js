@@ -23,6 +23,9 @@ beforeEach(() => {
 afterEach(() => {
   vi.useRealTimers();
   delete testGlobal.tgg;
+  delete testGlobal.tgg_cb_1;
+  delete testGlobal.tgg_cb_2;
+  delete testGlobal.tgg_cb_3;
 });
 
 test("calls the Flutter WebView bridge with callback id and api name", async () => {
@@ -46,6 +49,53 @@ test("calls the Flutter WebView bridge with callback id and api name", async () 
   sdk.resolve("tgg_cb_1", "user-123");
 
   await expect(promise).resolves.toBe("user-123");
+});
+
+test("registers a global callback for native responses", async () => {
+  testGlobal.tgg = {
+    postMessage() {},
+  };
+
+  const sdk = createMiniAppSDK();
+  const promise = sdk.getUserInfo();
+
+  expect(testGlobal.tgg_cb_1).toEqual(expect.any(Function));
+
+  (testGlobal.tgg_cb_1 as (value: unknown) => void)({
+    userId: "user-123",
+    avatar: "https://example.com/avatar.png",
+    username: "alice",
+    nickname: "Alice",
+  });
+
+  await expect(promise).resolves.toEqual({
+    userId: "user-123",
+    avatar: "https://example.com/avatar.png",
+    username: "alice",
+    nickname: "Alice",
+  });
+  expect(testGlobal.tgg_cb_1).toBeUndefined();
+});
+
+test("global callbacks can reject native errors", async () => {
+  testGlobal.tgg = {
+    postMessage() {},
+  };
+
+  const sdk = createMiniAppSDK();
+  const promise = sdk.getUserInfo();
+
+  (testGlobal.tgg_cb_1 as (value: unknown) => void)({
+    code: "USER_UNAVAILABLE",
+    message: "User is unavailable",
+    success: false,
+  });
+
+  await expect(promise).rejects.toMatchObject({
+    code: "USER_UNAVAILABLE",
+    message: "User is unavailable",
+  });
+  expect(testGlobal.tgg_cb_1).toBeUndefined();
 });
 
 test("exposes all known miniapp API methods", () => {

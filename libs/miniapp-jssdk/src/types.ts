@@ -25,6 +25,14 @@ export type MiniAppNativeError = {
   message?: string;
 };
 
+export type MiniAppNativeCallbackPayload = {
+  code?: string;
+  data?: unknown;
+  error?: MiniAppNativeError | string;
+  message?: string;
+  success?: boolean;
+};
+
 export type MiniAppSDKError = Error & {
   code?: string;
 };

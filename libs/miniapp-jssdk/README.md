@@ -26,5 +26,19 @@ The build emits ES5 IIFE bundles for WebView injection:
 ```
 
 The Flutter WebView host should expose `tgg.postMessage`.
-Native responses are completed by calling `TeamGagaMiniApp.resolve(id, value)` or
-`TeamGagaMiniApp.reject(id, error)`.
+Each request includes a callback name such as `tgg_cb_1`. Native responses can
+be completed by calling that global callback:
+
+```js
+tgg_cb_1({
+  userId: "user-123",
+  avatar: "https://example.com/avatar.png",
+  username: "alice",
+  nickname: "Alice",
+});
+```
+
+The callback also accepts `{ success: true, data }` and rejects on
+`{ success: false, code, message }`. `TeamGagaMiniApp.resolve(id, value)` and
+`TeamGagaMiniApp.reject(id, error)` remain available for host integrations that
+prefer an explicit SDK namespace.
