@@ -7,4 +7,7 @@ export default defineConfig({
     format: ["esm"],
     sourcemap: true,
   },
+  test: {
+    include: ["test/**/*.test.ts"],
+  },
 });
