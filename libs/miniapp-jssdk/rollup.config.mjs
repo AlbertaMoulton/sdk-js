@@ -34,9 +34,19 @@ export default [
   {
     input: "src/index.ts",
     output: {
+      file: "dist/index.esm.js",
+      format: "esm",
+      sourcemap: true,
+    },
+    plugins: basePlugins,
+  },
+  {
+    input: "src/index.ts",
+    output: {
       file: "dist/index.iife.js",
       format: "iife",
       name: "TeamGagaMiniApp",
+      exports: "named",
       sourcemap: true,
     },
     plugins: basePlugins,
@@ -47,6 +57,7 @@ export default [
       file: "dist/index.iife.min.js",
       format: "iife",
       name: "TeamGagaMiniApp",
+      exports: "named",
       sourcemap: true,
     },
     plugins: [

@@ -26,10 +26,12 @@
   ],
   "type": "module",
   "main": "./dist/index.iife.js",
+  "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
       "default": "./dist/index.iife.js"
     },
     "./package.json": "./package.json"

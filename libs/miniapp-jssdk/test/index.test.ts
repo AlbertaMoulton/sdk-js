@@ -1,11 +1,13 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 import {
+  default as defaultMiniAppSDK,
   createMiniAppSDK,
   getCommunityInfo,
   getCommunityId,
   getOauthCode,
   getSystemInfo,
+  TeamGagaMiniApp,
   getUserId,
   getUserInfo,
 } from "../src/index";
@@ -53,6 +55,11 @@ test("exposes all known miniapp API methods", () => {
   expect(getSystemInfo).toEqual(expect.any(Function));
   expect(getCommunityId).toEqual(expect.any(Function));
   expect(getCommunityInfo).toEqual(expect.any(Function));
+});
+
+test("supports default imports for app bundlers", () => {
+  expect(defaultMiniAppSDK).toBe(TeamGagaMiniApp);
+  expect(defaultMiniAppSDK.getSystemInfo).toEqual(expect.any(Function));
 });
 
 test("keeps callback ids unique when earlier requests finish out of order", async () => {

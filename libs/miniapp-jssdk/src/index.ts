@@ -9,6 +9,8 @@ export {
   getUserInfo,
 } from "./sdk";
 
+export { TeamGagaMiniApp as default } from "./sdk";
+
 export type {
   MiniAppBridge,
   MiniAppCommunityInfo,
