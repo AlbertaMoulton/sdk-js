@@ -8,6 +8,7 @@ export type MiniAppMethod =
 
 export type MiniAppBridge = {
   postMessage(message: string): void;
+  [callbackId: string]: unknown;
 };
 
 export type MiniAppSDKOptions = {
@@ -25,13 +26,7 @@ export type MiniAppNativeError = {
   message?: string;
 };
 
-export type MiniAppNativeCallbackPayload = {
-  code?: string;
-  data?: unknown;
-  error?: MiniAppNativeError | string;
-  message?: string;
-  success?: boolean;
-};
+export type MiniAppNativeCallbackPayload = unknown;
 
 export type MiniAppSDKError = Error & {
   code?: string;

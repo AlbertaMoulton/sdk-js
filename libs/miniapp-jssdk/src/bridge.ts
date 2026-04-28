@@ -10,6 +10,7 @@ import type {
 } from "./types";
 
 type PendingRequest = {
+  bridge: MiniAppBridge;
   resolve(value: unknown): void;
   reject(reason: unknown): void;
 };
@@ -51,7 +52,7 @@ export const createBridgeClient = (bridgeName: string): MiniAppBridgeClient => {
     }
 
     delete pendingRequests[id];
-    delete getRuntimeGlobal()[id];
+    delete pendingRequest.bridge[id];
     return pendingRequest;
   };
 
@@ -83,8 +84,8 @@ export const createBridgeClient = (bridgeName: string): MiniAppBridgeClient => {
     reject(id, result.value as MiniAppNativeError | string);
   };
 
-  const registerGlobalCallback = (id: string): void => {
-    getRuntimeGlobal()[id] = (payload: MiniAppNativeCallbackPayload) => {
+  const registerBridgeCallback = (bridge: MiniAppBridge, id: string): void => {
+    bridge[id] = (payload: MiniAppNativeCallbackPayload) => {
       settleNativeCallback(id, payload);
     };
   };
@@ -103,10 +104,11 @@ export const createBridgeClient = (bridgeName: string): MiniAppBridgeClient => {
 
     return new Promise<T>((resolve, reject) => {
       pendingRequests[request.callback] = {
+        bridge,
         resolve: resolve as (value: unknown) => void,
         reject,
       };
-      registerGlobalCallback(request.callback);
+      registerBridgeCallback(bridge, request.callback);
 
       try {
         bridge.postMessage(JSON.stringify(request));
@@ -130,32 +132,46 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 const normalizeNativeCallbackPayload = (
   payload: MiniAppNativeCallbackPayload,
 ): NativeCallbackResult => {
-  if (!isRecord(payload)) {
+  const parsedPayload = parseNativeCallbackPayload(payload);
+
+  if (!isRecord(parsedPayload)) {
     return {
       ok: true,
-      value: payload,
+      value: parsedPayload,
     };
   }
 
-  if (payload.success === false) {
+  if (parsedPayload.success === false) {
     return {
       ok: false,
-      value: payload.error ?? {
-        code: typeof payload.code === "string" ? payload.code : undefined,
-        message: typeof payload.message === "string" ? payload.message : undefined,
+      value: parsedPayload.error ?? {
+        code: typeof parsedPayload.code === "string" ? parsedPayload.code : undefined,
+        message: typeof parsedPayload.message === "string" ? parsedPayload.message : undefined,
       },
     };
   }
 
-  if ("data" in payload) {
+  if ("data" in parsedPayload) {
     return {
       ok: true,
-      value: payload.data,
+      value: parsedPayload.data,
     };
   }
 
   return {
     ok: true,
-    value: payload,
+    value: parsedPayload,
   };
+};
+
+const parseNativeCallbackPayload = (payload: MiniAppNativeCallbackPayload): unknown => {
+  if (typeof payload !== "string") {
+    return payload;
+  }
+
+  try {
+    return JSON.parse(payload) as unknown;
+  } catch {
+    return payload;
+  }
 };

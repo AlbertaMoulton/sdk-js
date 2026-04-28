@@ -27,10 +27,10 @@ The build emits ES5 IIFE bundles for WebView injection:
 
 The Flutter WebView host should expose `tgg.postMessage`.
 Each request includes a callback name such as `tgg_cb_1`. Native responses can
-be completed by calling that global callback:
+be completed by calling that callback on the `tgg` bridge object:
 
 ```js
-tgg_cb_1({
+tgg.tgg_cb_1({
   userId: "user-123",
   avatar: "https://example.com/avatar.png",
   username: "alice",
