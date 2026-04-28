@@ -1,6 +1,6 @@
 {
   "name": "@teamgaga/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TeamGaga Open Platform SDK for JavaScript and TypeScript",
   "keywords": [
     "bot",
